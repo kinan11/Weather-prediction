@@ -1,9 +1,11 @@
 import pandas as pd
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 import numpy as np
+from sklearn.tree import DecisionTreeRegressor, ExtraTreeRegressor
 
 
 def main():
@@ -32,21 +34,57 @@ def main():
     x_train = st_x.fit_transform(x_train)
     x_test = st_x.transform(x_test)
 
-    regressor = LinearRegression()
-    regressor.fit(x_train, y_train)
+    # Algorytmy
+    regressor_LR = LinearRegression()
+    regressor_DTR = DecisionTreeRegressor()
+    regressor_RFR = RandomForestRegressor(max_depth=100, random_state=0, n_estimators=200)
+    regressor_ETR = ExtraTreeRegressor()
 
-    y_pred = regressor.predict(x_test)
-    ia = (1 - (np.sum((y_test - y_pred) ** 2)) / (
-        np.sum((np.abs(y_pred - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))
+    # Dopasowanie
+    regressor_LR.fit(x_train, y_train)
+    regressor_DTR.fit(x_train, y_train)
+    regressor_RFR.fit(x_train, y_train)
+    regressor_ETR.fit(x_train, y_train)
 
-    print('Mean squared error: ', mean_squared_error(y_test, y_pred))
-    print('R2 score: ', r2_score(y_test, y_pred))
-    print('Index of agreement: ', ia)
+    # Predykcja
+    y_pred_LR = regressor_LR.predict(x_test)
+    y_pred_DTR = regressor_DTR.predict(x_test)
+    y_pred_RFR = regressor_RFR.predict(x_test)
+    y_pred_ETR = regressor_ETR.predict(x_test)
+
+    # Index od agreement
+    ia_LR = (1 - (np.sum((y_test - y_pred_LR) ** 2)) / (
+        np.sum((np.abs(y_pred_LR - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))
+    ia_DTR = (1 - (np.sum((y_test - y_pred_DTR) ** 2)) / (
+        np.sum((np.abs(y_pred_DTR - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))
+    ia_RFR = (1 - (np.sum((y_test - y_pred_RFR) ** 2)) / (
+        np.sum((np.abs(y_pred_RFR - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))
+    ia_ETR = (1 - (np.sum((y_test - y_pred_ETR) ** 2)) / (
+        np.sum((np.abs(y_pred_ETR - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))
 
     # Wyniki
-    print('\nTrain Score: ', regressor.score(x_train, y_train))
-    print('Test Score: ', regressor.score(x_test, y_test))
+    print('Linear Regression: ')
+    print('Mean squared error: ', mean_squared_error(y_test, y_pred_LR))
+    print('R2 score: ', r2_score(y_test, y_pred_LR))
+    print('Index of agreement: ', ia_LR)
+
+    print('\nDecision Tree Regression:')
+    print('Mean squared error: ', mean_squared_error(y_test, y_pred_DTR))
+    print('R2 score: ', r2_score(y_test, y_pred_DTR))
+    print('Index of agreement: ', ia_DTR)
+
+    print('\nRandom Forest Regression:')
+    print('Mean squared error: ', mean_squared_error(y_test, y_pred_RFR))
+    print('R2 score: ', r2_score(y_test, y_pred_RFR))
+    print('Index of agreement: ', ia_RFR)
+
+    print('\nExtra Tree Regression:')
+    print('Mean squared error: ', mean_squared_error(y_test, y_pred_ETR))
+    print('R2 score: ', r2_score(y_test, y_pred_ETR))
+    print('Index of agreement: ', ia_ETR)
 
 
 if __name__ == '__main__':
     main()
+
+# Sieć neuronowa z tutoriala
