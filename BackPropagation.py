@@ -6,7 +6,6 @@ from keras.layers import Dense
 from keras.wrappers.scikit_learn import KerasRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 def build_model():
@@ -47,13 +46,20 @@ st_x = StandardScaler()
 x_train = st_x.fit_transform(x_train)
 x_test = st_x.transform(x_test)
 
-regressor = KerasRegressor(build_fn=build_model, nb_epoch=200, batch_size=3)
-regressor.fit(x_train, y_train)
+model = build_model()
 
-y_pred = regressor.predict(x_test)
+model.compile(optimizer='rmsprop',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+model.fit(x_train, y_train)
+
+y_pred = model.predict(x_test)
+
 ia = (1 - (np.sum((y_test - y_pred) ** 2)) / (
     np.sum((np.abs(y_pred - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))
 print(str(y_pred[0]) + " " + str(y_test[0]))
+
+# print(len(build_model().get_weights()[1][0]))
 
 print('Neural Network: ')
 print('Mean squared error: ', mean_squared_error(y_test, y_pred))
