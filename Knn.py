@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import shap
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -52,6 +53,13 @@ def main():
         print('Mean squared error: ', mean_squared_error(y_test, y))
         print('R2 score: ', r2_score(y_test, y))
         print('Index of agreement: ', ia)
+
+    regressor = neighbors.KNeighborsRegressor(n_neighbors=(12))
+    regressor.fit(x_train, y_train)
+
+    explainer = shap.Explainer(regressor.predict, x_test)
+    shap_values = explainer(x_test)
+    shap.plots.bar(shap_values)
 
     print("\n Best neighbours: " + str(mi) + "\n MSE: "+str(mm))
 

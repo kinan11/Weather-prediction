@@ -1,4 +1,4 @@
-import pandas as pd
+from matplotlib import pyplot as plt
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -6,25 +6,18 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 import numpy as np
 from sklearn.tree import DecisionTreeRegressor, ExtraTreeRegressor
+import shap
+from GetXY import get_xy
 
 
 def main():
-    data = pd.read_csv('Dataset.csv')
-    data = data.drop('Dzień', axis=1)
-    data = data.drop('Miesiąc', axis=1)
-    data = data.drop('Rok', axis=1)
+    x, y = get_xy(10)
 
-    # Pozyskanie danych
-    x_tmp = data.iloc[:, 1:].values
-    y = data.iloc[4:, 3].values
-
-    x = []
-    for i in range(len(x_tmp) - 4):
-        x.append([])
-        x[i].extend(x_tmp[i])
-        x[i].extend(x_tmp[i+1])
-        x[i].extend(x_tmp[i + 2])
-        x[i].extend(x_tmp[i + 3])
+    feature_names =[]
+    for i in range(10):
+        feature_names.extend(["T_max_"+str(i+1), "T_min_"+str(i+1), "T_śr_"+str(i+1), "Suma opadów_"+str(i+1),
+                            "Śr. wilgotność_"+str(i+1), "Śr. pr. wiatru_"+str(i+1), "Śr. zachmurzenie_"+str(i+1),
+                            "Ciśnienie_"+str(i+1)])
 
     # Podział na dane uczące i trenujące
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
@@ -51,6 +44,17 @@ def main():
     y_pred_DTR = regressor_DTR.predict(x_test)
     y_pred_RFR = regressor_RFR.predict(x_test)
     y_pred_ETR = regressor_ETR.predict(x_test)
+
+
+    explainer = shap.Explainer(regressor_LR.predict, x_test)
+    shap_values = explainer(x_test)
+    shap.summary_plot(shap_values, show=False, feature_names=feature_names, plot_type="bar")
+    plt.savefig('./Wykresy/LR_10days.png', format='png')
+    plt.close()
+
+    # explainer = shap.Explainer(regressor_DTR.predict, x_test)
+    # shap_values = explainer(x_test)
+    # shap.plots.bar(shap_values)
 
     # Index od agreement
     ia_LR = (1 - (np.sum((y_test - y_pred_LR) ** 2)) / (
@@ -86,5 +90,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# Sieć neuronowa z tutoriala
