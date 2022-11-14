@@ -14,7 +14,7 @@ def build_model():
     model.add(Dense(150, input_dim=32, activation='sigmoid'))
     model.add(Dense(50, activation='relu'))
     model.add(Dense(1, activation='linear'))
-    model.compile(loss="mean_squared_error", optimizer="rmsprop")
+    model.compile(loss="mean_squared_error", optimizer="adam")
     return model
 
 
@@ -47,10 +47,19 @@ st_x = StandardScaler()
 x_train = st_x.fit_transform(x_train)
 x_test = st_x.transform(x_test)
 
-regressor = KerasRegressor(build_fn=build_model, nb_epoch=200, batch_size=3)
-regressor.fit(x_train, y_train)
+build_model = build_model()
 
-y_pred = regressor.predict(x_test)
+history = build_model.fit(x_train, y_train, epochs=80, verbose=0, validation_split=0.2)
+plt.plot(history.history['loss'], label='loss')
+plt.plot(history.history['val_loss'], label='val_loss')
+plt.ylim([0, 10])
+plt.xlabel('Epoch')
+plt.ylabel('Error [MPG]')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+y_pred = build_model.predict(x_test)
 ia = (1 - (np.sum((y_test - y_pred) ** 2)) / (
     np.sum((np.abs(y_pred - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))
 print(str(y_pred[0]) + " " + str(y_test[0]))
