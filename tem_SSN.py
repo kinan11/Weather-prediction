@@ -3,7 +3,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from keras.models import Sequential
 from keras.layers import Dense
-from keras.wrappers.scikit_learn import KerasRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 import numpy as np
 import matplotlib.pyplot as plt
@@ -60,8 +59,8 @@ plt.grid(True)
 plt.show()
 
 y_pred = build_model.predict(x_test)
-ia = (1 - (np.sum((y_test - y_pred) ** 2)) / (
-    np.sum((np.abs(y_pred - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))
+ia = (1 - (np.sum((y_test - y_pred) ** 2)) /
+      (np.sum((np.abs(y_pred - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))
 print(str(y_pred[0]) + " " + str(y_test[0]))
 
 print('Neural Network: ')
