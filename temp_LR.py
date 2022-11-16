@@ -46,11 +46,11 @@ def main():
     y_pred_ETR = regressor_ETR.predict(x_test)
 
 
-    explainer = shap.Explainer(regressor_LR.predict, x_test)
-    shap_values = explainer(x_test)
-    shap.summary_plot(shap_values, show=False, feature_names=feature_names, plot_type="bar")
-    plt.savefig('./Wykresy/LR_10days.png', format='png')
-    plt.close()
+    # explainer = shap.Explainer(regressor_LR.predict, x_test)
+    # shap_values = explainer(x_test)
+    # shap.summary_plot(shap_values, show=False, feature_names=feature_names, plot_type="bar")
+    # plt.savefig('./Wykresy/LR_10days.png', format='png')
+    # plt.close()
 
     # explainer = shap.Explainer(regressor_DTR.predict, x_test)
     # shap_values = explainer(x_test)
