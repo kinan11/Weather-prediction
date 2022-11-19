@@ -25,5 +25,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-# Jak skalować datę
-# Czy istnieją inne sposoby skalowania i czy może któryś jest lepszy
