@@ -47,7 +47,7 @@ def main():
     regressor = neighbors.KNeighborsRegressor(n_neighbors=(mi + 1))
     regressor.fit(x_train, y_train)
 
-    # # analiza shap
+    # analiza shap
     # explainer = shap.Explainer(regressor.predict, x_test)
     # shap_values = explainer(x_test)
     # shap.plots.bar(shap_values)
