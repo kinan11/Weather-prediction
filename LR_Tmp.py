@@ -6,6 +6,7 @@ from GetXY import get_xy2
 from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 import shap
+import pickle
 
 
 def main():
@@ -13,7 +14,7 @@ def main():
     r2score = []
     ia = []
     feature_names = []
-    n = 25
+    n = 3
     for i in range(n):
         x, y = get_xy2(i+1)
 

@@ -1,6 +1,7 @@
 import pandas as pd
 
 
+# dane standardowe, ze wszystkimi wartościami
 def get_xy(n):
     data = pd.read_csv('Dataset.csv')
     data = data.drop('Dzień', axis=1)
@@ -18,6 +19,8 @@ def get_xy(n):
             x[i].extend(x_tmp[i+j])
     return x, y
 
+
+# dane tylko z temperaturą (temperatura min, max, średnia)
 def get_xy2(n):
     data = pd.read_csv('Dataset.csv')
     data = data.drop('Dzień', axis=1)

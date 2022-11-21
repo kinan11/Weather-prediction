@@ -8,13 +8,17 @@ import numpy as np
 from sklearn.tree import DecisionTreeRegressor, ExtraTreeRegressor
 import shap
 from GetXY import get_xy
+from GetXY_predict import get_xy1
 
 
 def main():
-    x, y = get_xy(10)
+    # pozyskanie danych z 3 poprzednich dni
+    x, y = get_xy(3)
 
-    feature_names =[]
-    for i in range(10):
+    feature_names = []
+
+    # nagłówki do analizy shap
+    for i in range(3):
         feature_names.extend(["T_max_"+str(i+1), "T_min_"+str(i+1), "T_śr_"+str(i+1), "Suma opadów_"+str(i+1),
                             "Śr. wilgotność_"+str(i+1), "Śr. pr. wiatru_"+str(i+1), "Śr. zachmurzenie_"+str(i+1),
                             "Ciśnienie_"+str(i+1)])
@@ -45,7 +49,7 @@ def main():
     y_pred_RFR = regressor_RFR.predict(x_test)
     y_pred_ETR = regressor_ETR.predict(x_test)
 
-
+    # analiza shap
     # explainer = shap.Explainer(regressor_LR.predict, x_test)
     # shap_values = explainer(x_test)
     # shap.summary_plot(shap_values, show=False, feature_names=feature_names, plot_type="bar")
@@ -86,6 +90,23 @@ def main():
     print('Mean squared error: ', mean_squared_error(y_test, y_pred_ETR))
     print('R2 score: ', r2_score(y_test, y_pred_ETR))
     print('Index of agreement: ', ia_ETR)
+
+    # pozyskanie danych z poprzednich 3 dni dla 2022
+    x, y = get_xy1(3)
+    st_x = StandardScaler()
+    x = st_x.fit_transform(x)
+    y_pred = regressor_LR.predict(x)
+    ia = (1 - (np.sum((y - y_pred) ** 2)) /
+          (np.sum((np.abs(y_pred - np.mean(y)) + np.abs(y - np.mean(y))) ** 2)))
+
+    print('\nLinear Regression for 2022: ')
+    print('Mean squared error: ', mean_squared_error(y, y_pred))
+    print('R2 score: ', r2_score(y, y_pred))
+    print('Index of agreement: ', ia)
+    plt.plot(y_pred, color="red")
+    plt.plot(y, color="blue")
+    plt.savefig('./Wykresy/LR_2022.png', format='png')
+    plt.show()
 
 
 if __name__ == '__main__':

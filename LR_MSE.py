@@ -6,6 +6,7 @@ from GetXY import get_xy
 from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 import shap
+import pickle
 
 
 def main():
