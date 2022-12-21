@@ -1,5 +1,6 @@
 import pandas as pd
 import shap
+from keras_visualizer import visualizer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from keras.models import Sequential
@@ -9,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from GetXY import get_xy
+from keras.utils.vis_utils import plot_model
 
 
 # model Sieci Neuronowej
@@ -19,13 +21,13 @@ def build_model():
     model.add(Dense(1, activation='linear'))
     model.compile(loss="mean_squared_error", optimizer="adam")
 
-    # Warstwy po Grid Search (gorsze wyniki)
+    # Warstwy po Grid Search
 
-    # model.add(Dense(11, input_dim=24, activation='linear'))
+    # model.add(Dense(11, input_dim=24, activation='sigmoid'))
     # model.add(Dense(4, activation='linear'))
     # model.add(Dense(1, activation='linear'))
-    # model.compile(loss="mae", optimizer="rmsprop")
-    return model
+    # model.compile(loss="mae", optimizer="adam")
+    # return model
 
 
 # Liczba dni wstecz do predykcji
@@ -53,6 +55,7 @@ x_test = st_x.transform(x_test)
 
 # budowanie modelu
 build_model = build_model()
+build_model.summary()
 
 # warunek wcześniejszego zakończenia
 callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', mode="min", patience=10)
@@ -77,7 +80,7 @@ y_pred = build_model.predict(x_test)
 ia = (1 - (np.sum((y_test - y_pred) ** 2)) /
       (np.sum((np.abs(y_pred - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))
 
-# analiza Shapleya
+# #analiza Shapleya
 # explainer = shap.Explainer(build_model.predict, x_test)
 # shap_values = explainer(x_test)
 # shap.summary_plot(shap_values, show=False, feature_names=feature_names, plot_type="bar")
@@ -90,4 +93,4 @@ print('R2 score: ', r2_score(y_test, y_pred))
 print('Index of agreement: ', ia)
 
 # zapisanie modelu
-build_model.save('ssn_model1')
+# build_model.save('ssn_model1')

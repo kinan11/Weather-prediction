@@ -39,10 +39,10 @@ def main():
             mm = mean_squared_error(y_test, y)
             mi = i
 
-        # print('\n' + str(i) +' neighbours: ')
-        # print('Mean squared error: ', mean_squared_error(y_test, y))
-        # print('R2 score: ', r2_score(y_test, y))
-        # print('Index of agreement: ', ia)
+        print('\n' + str(i) +' neighbours: ')
+        print('Mean squared error: ', mean_squared_error(y_test, y))
+        print('R2 score: ', r2_score(y_test, y))
+        print('Index of agreement: ', ia)
 
     regressor = neighbors.KNeighborsRegressor(n_neighbors=(mi + 1))
     regressor.fit(x_train, y_train)
@@ -52,7 +52,7 @@ def main():
     # shap_values = explainer(x_test)
     # shap.plots.bar(shap_values)
 
-    print("\n Best neighbours: " + str(mi) + "\n MSE: "+str(mm))
+    print("\n Best neighbours: " + str(mi) + "\n MSE: "+str(mm) )
 
 
 if __name__ == '__main__':

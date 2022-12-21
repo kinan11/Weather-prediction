@@ -43,23 +43,23 @@ def main():
     # plt.set_ylabel("mse [$^\circ$$C^{2}$]")
     plt.show()
 
-    # y_pred = model_LR.predict(x)
-    # ia = (1 - (np.sum((y - y_pred) ** 2)) /
-    #       (np.sum((np.abs(y_pred - np.mean(y)) + np.abs(y - np.mean(y))) ** 2)))
-    #
-    # print('Neural Network: ')
-    # print('Mean squared error: ', mean_squared_error(y, y_pred))
-    # print('R2 score: ', r2_score(y, y_pred))
-    # print('Index of agreement: ', ia)
+    y_pred = model_LR.predict(x)
+    ia = (1 - (np.sum((y - y_pred) ** 2)) /
+          (np.sum((np.abs(y_pred - np.mean(y)) + np.abs(y - np.mean(y))) ** 2)))
 
-    # plt.plot(y_pred, color="red")
-    # plt.plot(y, color="blue")
-    # # plt.set_title('MSE')
-    # # plt.set_xlabel('days')
-    # # plt.set_ylabel("mse [$^\circ$$C^{2}$]")
-    # plt.show()
-    # score = model_LR.score(x, y)
-    # print(score)
+    print('Neural Network: ')
+    print('Mean squared error: ', mean_squared_error(y, y_pred))
+    print('R2 score: ', r2_score(y, y_pred))
+    print('Index of agreement: ', ia)
+
+    plt.plot(y_pred, color="red")
+    plt.plot(y, color="blue")
+    # plt.set_title('MSE')
+    # plt.set_xlabel('days')
+    # plt.set_ylabel("mse [$^\circ$$C^{2}$]")
+    plt.show()
+    score = model_LR.score(x, y)
+    print(score)
 
 
 if __name__ == '__main__':

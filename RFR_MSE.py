@@ -13,7 +13,7 @@ def main():
     r2score = []
     ia = []
     feature_names = []
-    n = 100
+    n = 50
     for i in range(n):
         x, y = get_xy(i+1)
 
