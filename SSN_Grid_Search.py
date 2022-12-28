@@ -65,5 +65,3 @@ print('Mean squared error: ', mean_squared_error(y_test, y_pred))
 print('R2 score: ', r2_score(y_test, y_pred))
 print('Index of agreement: ', ia)
 print('Best params: ', grid_search.best_params_)
-
-# build_model.save('ssn_model_grid')

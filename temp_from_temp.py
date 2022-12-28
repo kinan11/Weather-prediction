@@ -31,12 +31,12 @@ def main():
 
     x_test = numpy.array(x_test)
 
-    # explainer = shap.Explainer(regressor.predict, x_test)
-    # shap_values = explainer(x_test)
-    # feature_names = ["3","2","1"]
-    # shap.summary_plot(shap_values,show=False,feature_names=feature_names, plot_type="bar")
-    # plt.savefig('./Temp_from_temp/3days.png', format='png')
-    # plt.close()
+    explainer = shap.Explainer(regressor.predict, x_test)
+    shap_values = explainer(x_test)
+    feature_names = ["3","2","1"]
+    shap.summary_plot(shap_values,show=False,feature_names=feature_names, plot_type="bar")
+    plt.savefig('./Temp_from_temp/3days.png', format='png')
+    plt.close()
 
     ia = (1 - (np.sum((y_test - y_pred) ** 2)) / (
         np.sum((np.abs(y_pred - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))

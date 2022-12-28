@@ -1,6 +1,4 @@
 import pickle
-
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score
 import numpy as np
@@ -38,9 +36,6 @@ def main():
     plt.plot(y_pred, color="red")
     plt.plot(y, color="blue")
     plt.savefig('./Wykresy/NN_2022.png', format='png')
-    # plt.set_title('MSE')
-    # plt.set_xlabel('days')
-    # plt.set_ylabel("mse [$^\circ$$C^{2}$]")
     plt.show()
 
     y_pred = model_LR.predict(x)
@@ -54,9 +49,6 @@ def main():
 
     plt.plot(y_pred, color="red")
     plt.plot(y, color="blue")
-    # plt.set_title('MSE')
-    # plt.set_xlabel('days')
-    # plt.set_ylabel("mse [$^\circ$$C^{2}$]")
     plt.show()
     score = model_LR.score(x, y)
     print(score)

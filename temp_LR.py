@@ -6,7 +6,6 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 import numpy as np
 from sklearn.tree import DecisionTreeRegressor, ExtraTreeRegressor
-import shap
 from GetXY import get_xy
 from GetXY_predict import get_xy1
 
@@ -48,17 +47,6 @@ def main():
     y_pred_DTR = regressor_DTR.predict(x_test)
     y_pred_RFR = regressor_RFR.predict(x_test)
     y_pred_ETR = regressor_ETR.predict(x_test)
-
-    # analiza shap
-    # explainer = shap.Explainer(regressor_LR.predict, x_test)
-    # shap_values = explainer(x_test)
-    # shap.summary_plot(shap_values, show=False, feature_names=feature_names, plot_type="bar")
-    # plt.savefig('./Wykresy/LR_10days.png', format='png')
-    # plt.close()
-
-    # explainer = shap.Explainer(regressor_DTR.predict, x_test)
-    # shap_values = explainer(x_test)
-    # shap.plots.bar(shap_values)
 
     # Index od agreement
     ia_LR = (1 - (np.sum((y_test - y_pred_LR) ** 2)) / (

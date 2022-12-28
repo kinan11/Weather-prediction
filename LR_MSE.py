@@ -6,7 +6,6 @@ from GetXY import get_xy
 from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 import shap
-import pickle
 
 
 def main():
@@ -14,7 +13,7 @@ def main():
     r2score = []
     ia = []
     feature_names = []
-    n = 200
+    n = 10
     for i in range(n):
         x, y = get_xy(i+1)
 
@@ -64,11 +63,11 @@ def main():
 
     plt.show()
 
-    # explainer = shap.Explainer(regressor_LR.predict, x_test)
-    # shap_values = explainer(x_test)
-    # shap.summary_plot(shap_values, show=False, feature_names=feature_names, plot_type="bar")
-    # plt.savefig('./Wykresy/LR_'+str(n)+'days.png', format='png')
-    # plt.close()
+    explainer = shap.Explainer(regressor_LR.predict, x_test)
+    shap_values = explainer(x_test)
+    shap.summary_plot(shap_values, show=False, feature_names=feature_names, plot_type="bar")
+    plt.savefig('./Wykresy/LR_'+str(n)+'days.png', format='png')
+    plt.close()
 
 
 if __name__ == '__main__':

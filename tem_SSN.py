@@ -1,6 +1,4 @@
-import pandas as pd
 import shap
-from keras_visualizer import visualizer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from keras.models import Sequential
@@ -10,7 +8,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from GetXY import get_xy
-from keras.utils.vis_utils import plot_model
 
 
 # model Sieci Neuronowej
@@ -27,7 +24,7 @@ def build_model():
     # model.add(Dense(4, activation='linear'))
     # model.add(Dense(1, activation='linear'))
     # model.compile(loss="mae", optimizer="adam")
-    # return model
+    return model
 
 
 # Liczba dni wstecz do predykcji
@@ -81,11 +78,11 @@ ia = (1 - (np.sum((y_test - y_pred) ** 2)) /
       (np.sum((np.abs(y_pred - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))
 
 # #analiza Shapleya
-# explainer = shap.Explainer(build_model.predict, x_test)
-# shap_values = explainer(x_test)
-# shap.summary_plot(shap_values, show=False, feature_names=feature_names, plot_type="bar")
-# plt.savefig('./Wykresy/NN_'+str(n)+'days.png', format='png')
-# plt.close()
+explainer = shap.Explainer(build_model.predict, x_test)
+shap_values = explainer(x_test)
+shap.summary_plot(shap_values, show=False, feature_names=feature_names, plot_type="bar")
+plt.savefig('./Wykresy/NN_'+str(n)+'days.png', format='png')
+plt.close()
 
 print('Neural Network: ')
 print('Mean squared error: ', mean_squared_error(y_test, y_pred))
@@ -93,4 +90,4 @@ print('R2 score: ', r2_score(y_test, y_pred))
 print('Index of agreement: ', ia)
 
 # zapisanie modelu
-# build_model.save('ssn_model1')
+build_model.save('ssn_model1')

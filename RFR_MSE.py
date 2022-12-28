@@ -63,11 +63,11 @@ def main():
 
     plt.show()
 
-    # explainer = shap.Explainer(regressor_RFR.predict, x_test)
-    # shap_values = explainer(x_test)
-    # shap.summary_plot(shap_values, show=False, feature_names=feature_names, plot_type="bar")
-    # plt.savefig('./Wykresy/RFR_'+str(n)+'days.png', format='png')
-    # plt.close()
+    explainer = shap.Explainer(regressor_RFR.predict, x_test)
+    shap_values = explainer(x_test)
+    shap.summary_plot(shap_values, show=False, feature_names=feature_names, plot_type="bar")
+    plt.savefig('./Wykresy/RFR_'+str(n)+'days.png', format='png')
+    plt.close()
 
 
 if __name__ == '__main__':
