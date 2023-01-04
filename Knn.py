@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn import neighbors
 from GetXY import get_xy
+import matplotlib.pyplot as plt
 
 
 def main():
@@ -23,6 +24,8 @@ def main():
     # najlepsza liczba sąsiadów
     mi = 0
 
+    mse = []
+
     # poszukiwanie najlepszej liczby sąsiadów
     for i in range(50):
         regressor = neighbors.KNeighborsRegressor(n_neighbors=(i+1))
@@ -32,6 +35,8 @@ def main():
 
         ia = (1 - (np.sum((y_test - y) ** 2)) / (
             np.sum((np.abs(y - np.mean(y_test)) + np.abs(y_test - np.mean(y_test))) ** 2)))
+
+        mse.append(mean_squared_error(y_test, y))
 
         if mean_squared_error(y_test, y) < mm:
             mm = mean_squared_error(y_test, y)
@@ -46,6 +51,11 @@ def main():
     regressor.fit(x_train, y_train)
 
     print("\n Best neighbours: " + str(mi) + "\n MSE: "+str(mm) )
+
+    plt.plot([i for i in range(1, 51)], mse, color='red')
+    plt.xlabel('Neighbours')
+    plt.ylabel('MSE')
+    plt.savefig('./Wykresy/Knn_neighbours.png', format='png')
 
 
 if __name__ == '__main__':
